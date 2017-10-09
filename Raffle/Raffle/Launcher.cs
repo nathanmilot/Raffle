@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Raffle {
-    static class Program {
+    static class Launcher {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -13,7 +13,9 @@ namespace Raffle {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            var context = ViewApplicationContext.GetContext();
+            ViewApplicationContext.GetContext().RunNew();
+            Application.Run(context);
         }
     }
 }

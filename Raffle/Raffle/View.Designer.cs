@@ -1,5 +1,5 @@
 ﻿namespace Raffle {
-    partial class Form1 {
+    partial class View {
         /// <summary>
         /// Required designer variable.
         /// </summary>
