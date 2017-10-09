@@ -41,22 +41,24 @@ namespace Raffle {
         public void AnimateWinner() {
             Task.Factory.StartNew(() => {
                 int milliseconds = 50;
-                for (int i = 0; i < 50; i++) {
+                for (int i = 0; i < 25; i++) {
                     this.Invoke((MethodInvoker)delegate {
                         GetNextWinner();
                     });
                     Thread.Sleep(milliseconds += 5);
                 }
-                if (EnableButtonsEvent != null) {
-                    //EnableButtonsEvent(true);
-                }
+                this.Invoke((MethodInvoker)delegate {
+                    if (EnableButtonsEvent != null) {
+                        EnableButtonsEvent(true);
+                    }
+                });
             });
         }
 
         private void GetNextWinner() {
             if (GetNextWinnerEvent != null) {
                 if (EnableButtonsEvent != null) {
-                    //EnableButtonsEvent(false); 
+                    EnableButtonsEvent(false);
                 }
                 GetNextWinnerEvent();
             }
