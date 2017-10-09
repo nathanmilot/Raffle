@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Raffle {
@@ -11,7 +6,7 @@ namespace Raffle {
 
         private IView window;
         private Raffle model;
-        private View window1;
+        private System.Windows.Forms.View window1;
 
         public Controller(IView window) {
             this.window = window;
@@ -19,17 +14,27 @@ namespace Raffle {
 
             window.ChooseFileEvent += HandleChooseFile;
             window.OpenFileEvent += HandleOpenFile;
+            window.GetNextWinnerEvent += HandleGetNextWinner;
+            window.EnableButtonsEvent += HandleEnableButtons;
         }
 
-        public Controller(View window1) {
+        public Controller(System.Windows.Forms.View window1) {
             this.window1 = window1;
+        }
+
+        private void HandleEnableButtons(bool enable) {
+            window.EnableButtons(enable);
+        }
+
+        private void HandleGetNextWinner() {
+            window.SetNextWinner(model.GetNextWinner());
         }
 
         private void HandleChooseFile(string from) {
             OpenFileDialog fileDialog = new OpenFileDialog();
             fileDialog.Title = "Open Raffle File";
-            fileDialog.DefaultExt = ".csv";
-            fileDialog.Filter = "Raffle File|*.csv|All files|*.*";
+            fileDialog.DefaultExt = ".csv;.tsv;.txt;";
+            fileDialog.Filter = "Raffle File|*.csv;*.tsv;*.txt; |All files|*.*";
             DialogResult result = fileDialog.ShowDialog();
             if (result == DialogResult.Yes || result == DialogResult.OK) {
                 window.OpenFile(fileDialog.FileName.Replace("\\", "/"));
@@ -40,14 +45,13 @@ namespace Raffle {
         }
 
         public void HandleOpenFile(string filename) {
-            StreamReader inputFile = null;
             try {
                 model = new Raffle(filename.Replace("\\", "/"));
             } catch (Exception) {
                 MessageBox.Show("There was an error loading the file");
             }
-            inputFile.Close();
             window.AnimateWinner();
         }
+
     }
 }

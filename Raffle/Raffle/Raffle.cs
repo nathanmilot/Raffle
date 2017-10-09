@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Raffle {
@@ -11,9 +8,11 @@ namespace Raffle {
 
         private List<string> names;
         private int counter;
-        private bool running = false;
 
         public Raffle(string fileName) {
+            if(fileName == null) {
+                return;
+            }
             Random rndm = new Random();
             StreamReader myStream = null;
 
@@ -23,12 +22,16 @@ namespace Raffle {
                 if ((myStream = new StreamReader(fileName)) != null) {
                     while (!myStream.EndOfStream) {
                         string line = myStream.ReadLine();
-                        string name = line.Split(',')[0];
-                        if (double.TryParse(line.Split(',')[1], out double count)) {
-                            for (int i = 0; i < count; i++) {
-                                names.Insert(rndm.Next(0, names.Count), name);
-                            }
+                        string name = line.Split(',','\t')[0];
 
+                        if (line.Split(',', '\t').Length == 2) {
+                            if (double.TryParse(line.Split(',','\t')[1], out double count)) {
+                                for (int i = 0; i < count; i++) {
+                                    names.Insert(rndm.Next(0, names.Count), name);
+                                }
+                            } 
+                        } else {
+                            names.Insert(rndm.Next(0, names.Count), name);
                         }
                     }
                 }
