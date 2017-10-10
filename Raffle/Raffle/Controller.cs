@@ -16,6 +16,11 @@ namespace Raffle {
             window.OpenFileEvent += HandleOpenFile;
             window.GetNextWinnerEvent += HandleGetNextWinner;
             window.EnableButtonsEvent += HandleEnableButtons;
+            window.UpdateRemainingContestantsEvent += HandleUpdateRemainingContestants;
+        }
+
+        private void HandleUpdateRemainingContestants() {
+            window.UpdateRemainingContestantsList(model.GetRemainingNames());
         }
 
         public Controller(System.Windows.Forms.View window1) {
@@ -24,10 +29,15 @@ namespace Raffle {
 
         private void HandleEnableButtons(bool enable) {
             window.EnableButtons(enable);
+            if (model.GetRemainingNames().Count == 1 && window.CurrentWinner.Equals(model.GetRemainingNames().Min))
+                window.EnableNewWinnerButton(false);
         }
 
-        private void HandleGetNextWinner() {
-            window.SetNextWinner(model.GetNextWinner());
+        private void HandleGetNextWinner(bool possibleRemove) {
+            if (possibleRemove)
+                window.SetNextWinner(model.GetNextWinner(window.RemoveContestant));
+            else
+                window.SetNextWinner(model.GetNextWinner());
         }
 
         private void HandleChooseFile(string from) {
@@ -38,6 +48,7 @@ namespace Raffle {
             DialogResult result = fileDialog.ShowDialog();
             if (result == DialogResult.Yes || result == DialogResult.OK) {
                 window.OpenFile(fileDialog.FileName.Replace("\\", "/"));
+                window.EnableNewWinnerButton(true);
             } else if (from != null) {
                 throw new Exception("User canceled the selection");
             }
@@ -47,10 +58,12 @@ namespace Raffle {
         public void HandleOpenFile(string filename) {
             try {
                 model = new Raffle(filename.Replace("\\", "/"));
+                window.UpdateRemainingContestantsList(model.GetRemainingNames());
+                window.AnimateWinner();
+
             } catch (Exception) {
                 MessageBox.Show("There was an error loading the file");
             }
-            window.AnimateWinner();
         }
 
     }

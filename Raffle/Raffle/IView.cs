@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Raffle {
@@ -6,14 +7,19 @@ namespace Raffle {
 
         string CurrentFile { get; set; }
 
+        string CurrentWinner { get; set; }
+
+        bool RemoveContestant { get; set; }
+
         event Action<string> ChooseFileEvent;
 
         event Action<string> OpenFileEvent;
 
         event Action<bool> EnableButtonsEvent;
 
-        event Action GetNextWinnerEvent;
+        event Action<bool> GetNextWinnerEvent;
 
+        event Action UpdateRemainingContestantsEvent;
 
         void OpenFile(string name);
 
@@ -22,5 +28,9 @@ namespace Raffle {
         void SetNextWinner(string winner);
 
         void EnableButtons(bool enable);
+
+        void EnableNewWinnerButton(bool enable);
+
+        void UpdateRemainingContestantsList(SortedSet<string> contestants);
     }
 }

@@ -10,7 +10,7 @@ namespace Raffle {
         private int counter;
 
         public Raffle(string fileName) {
-            if(fileName == null) {
+            if (fileName == null) {
                 return;
             }
             Random rndm = new Random();
@@ -22,14 +22,14 @@ namespace Raffle {
                 if ((myStream = new StreamReader(fileName)) != null) {
                     while (!myStream.EndOfStream) {
                         string line = myStream.ReadLine();
-                        string name = line.Split(',','\t')[0];
+                        string name = line.Split(',', '\t')[0];
 
                         if (line.Split(',', '\t').Length == 2) {
-                            if (double.TryParse(line.Split(',','\t')[1], out double count)) {
+                            if (double.TryParse(line.Split(',', '\t')[1], out double count)) {
                                 for (int i = 0; i < count; i++) {
                                     names.Insert(rndm.Next(0, names.Count), name);
                                 }
-                            } 
+                            }
                         } else {
                             names.Insert(rndm.Next(0, names.Count), name);
                         }
@@ -41,10 +41,29 @@ namespace Raffle {
         }
 
         public string GetNextWinner() {
-            if (!ReferenceEquals(names, null) && names.Count > 0)
-                return names[counter++ % names.Count];
-            return "select a raffle file first";
+            return GetNextWinner(false);
         }
 
+        public string GetNextWinner(bool remove) {
+            if (!ReferenceEquals(names, null) && GetRemainingNames().Count > 1) {
+                if (!remove) {
+                    return names[counter++ % names.Count];
+                } else {
+                    string result = names[counter++ % names.Count];
+                    names.RemoveAll(new Predicate<string>(result.Equals));
+                    return result;
+                }
+            }
+            if (ReferenceEquals(names, null))
+                return "Select a raffle file first";
+            return GetRemainingNames().Min;
+        }
+
+        public SortedSet<string> GetRemainingNames() {
+            if (names != null)
+                return new SortedSet<string>(names);
+            else
+                return new SortedSet<string>();
+        }
     }
 }

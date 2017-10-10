@@ -13,29 +13,45 @@ namespace Raffle {
         public event Action<string> ChooseFileEvent;
         public event Action<string> OpenFileEvent;
         public event Action<bool> EnableButtonsEvent;
-        public event Action GetNextWinnerEvent;
+        public event Action<bool> GetNextWinnerEvent;
+        public event Action UpdateRemainingContestantsEvent;
 
 
         public string CurrentFile { get; set; }
 
+        public string CurrentWinner {
+            get {
+                return this.raffle_winner_lbl.Text;
+            }
+            set { }
+        }
+
+        public bool RemoveContestant {
+            get {
+                return this.remove_user_option.Checked;
+            }
+            set { }
+        }
+
         public View() {
             InitializeComponent();
+            this.Height = 160;
+            this.MaximizeBox = false;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.EnableNewWinnerButton(false);
         }
 
-        private void openRaffleToolStripMenuItem_Click(object sender, EventArgs e) {
-            if (ChooseFileEvent != null) {
-                ChooseFileEvent(null);
-            }
+        private void OpenRaffleToolStripMenuItem_Click(object sender, EventArgs e) {
+            ChooseFileEvent?.Invoke(null);
         }
 
-        private void select_winner_btn_Click(object sender, EventArgs e) {
+        private void Select_winner_btn_Click(object sender, EventArgs e) {
             AnimateWinner();
         }
 
         public void OpenFile(string name) {
-            if (OpenFileEvent != null) {
-                OpenFileEvent(name);
-            }
+            OpenFileEvent?.Invoke(name);
         }
 
         public void AnimateWinner() {
@@ -43,35 +59,62 @@ namespace Raffle {
                 int milliseconds = 50;
                 for (int i = 0; i < 25; i++) {
                     this.Invoke((MethodInvoker)delegate {
-                        GetNextWinner();
+                        GetNextWinner(i == 24);
                     });
                     Thread.Sleep(milliseconds += 5);
                 }
                 this.Invoke((MethodInvoker)delegate {
-                    if (EnableButtonsEvent != null) {
-                        EnableButtonsEvent(true);
-                    }
+                    EnableButtonsEvent?.Invoke(true);
+                    UpdateRemainingContestantsEvent?.Invoke();
                 });
             });
         }
 
-        private void GetNextWinner() {
+        private void GetNextWinner(bool possibleRemove) {
             if (GetNextWinnerEvent != null) {
-                if (EnableButtonsEvent != null) {
-                    EnableButtonsEvent(false);
-                }
-                GetNextWinnerEvent();
+                EnableButtonsEvent?.Invoke(false);
+                GetNextWinnerEvent(possibleRemove);
             }
         }
 
         public void SetNextWinner(string winner) {
-            raffle_winner_lbl.Text = "Winner: " + winner;
+            raffle_winner_lbl.Text = winner;
         }
 
         public void EnableButtons(bool enable) {
             openRaffleToolStripMenuItem.Enabled = enable;
             select_winner_btn.Enabled = enable;
+            show_remaining_option.Enabled = enable;
+            remove_user_option.Enabled = enable;
         }
+
+        public void EnableNewWinnerButton(bool enable) {
+            select_winner_btn.Enabled = enable;
+        }
+
+        private void remove_user_option_Click(object sender, EventArgs e) {
+            this.remove_user_option.Checked = !this.remove_user_option.Checked;
+        }
+
+        private void showRemainingContestantsToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.show_remaining_option.Checked = !this.show_remaining_option.Checked;
+            if (this.show_remaining_option.Checked) {
+                this.Height += 170;
+                UpdateRemainingContestantsEvent?.Invoke();
+                this.contestants_list.Visible = true;
+            } else {
+                this.Height -= 170;
+                this.contestants_list.Visible = false;
+            }
+        }
+
+        public void UpdateRemainingContestantsList(SortedSet<string> contestants) {
+            this.contestants_list.Items.Clear();
+            foreach (string name in contestants) {
+                this.contestants_list.Items.Add(name);
+            }
+        }
+
     }
 
 }
