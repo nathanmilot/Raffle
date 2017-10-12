@@ -13,13 +13,13 @@ namespace Raffle {
 
         event Action<string> ChooseFileEvent;
 
-        event Action<string> OpenFileEvent;
+        event Action<string, bool> OpenFileEvent;
 
         event Action<bool> EnableButtonsEvent;
 
         event Action<bool> GetNextWinnerEvent;
 
-        event Action UpdateRemainingContestantsEvent;
+        event Action<bool> UpdateRemainingContestantsEvent;
 
         void OpenFile(string name);
 
@@ -32,5 +32,7 @@ namespace Raffle {
         void EnableNewWinnerButton(bool enable);
 
         void UpdateRemainingContestantsList(SortedSet<string> contestants);
+
+        void UpdateRemainingContestantsList(SortedDictionary<string, int> contestants);
     }
 }

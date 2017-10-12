@@ -23,7 +23,7 @@ namespace Raffle {
                     while (!myStream.EndOfStream) {
                         string line = myStream.ReadLine();
                         string name = line.Split(',', '\t')[0];
-
+                        //TODO(nathanmilot): improve this efficency.
                         if (line.Split(',', '\t').Length == 2) {
                             if (double.TryParse(line.Split(',', '\t')[1], out double count)) {
                                 for (int i = 0; i < count; i++) {
@@ -64,6 +64,21 @@ namespace Raffle {
                 return new SortedSet<string>(names);
             else
                 return new SortedSet<string>();
+        }
+
+        public SortedDictionary<string, int> GetRemainingNamesWithCount() {
+            if (names != null) {
+                SortedDictionary<string, int> result = new SortedDictionary<string, int>();
+                foreach (string s in names) {
+                    if (result.ContainsKey(s)) {
+                        result[s]++;
+                    } else {
+                        result.Add(s, 1);
+                    }
+                }
+                return result;
+            }
+            return new SortedDictionary<string, int>();
         }
     }
 }

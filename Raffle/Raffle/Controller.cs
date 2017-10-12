@@ -17,10 +17,13 @@ namespace Raffle {
             window.GetNextWinnerEvent += HandleGetNextWinner;
             window.EnableButtonsEvent += HandleEnableButtons;
             window.UpdateRemainingContestantsEvent += HandleUpdateRemainingContestants;
-        }
+    }
 
-        private void HandleUpdateRemainingContestants() {
-            window.UpdateRemainingContestantsList(model.GetRemainingNames());
+        private void HandleUpdateRemainingContestants(bool showCount) {
+            if (showCount)
+                window.UpdateRemainingContestantsList(model.GetRemainingNamesWithCount());
+            else
+                window.UpdateRemainingContestantsList(model.GetRemainingNames());
         }
 
         public Controller(System.Windows.Forms.View window1) {
@@ -55,10 +58,10 @@ namespace Raffle {
             fileDialog.Dispose();
         }
 
-        public void HandleOpenFile(string filename) {
+        public void HandleOpenFile(string filename, bool showCount) {
             try {
                 model = new Raffle(filename.Replace("\\", "/"));
-                window.UpdateRemainingContestantsList(model.GetRemainingNames());
+                HandleUpdateRemainingContestants(showCount);
                 window.AnimateWinner();
 
             } catch (Exception) {

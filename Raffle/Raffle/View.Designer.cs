@@ -30,9 +30,12 @@
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.remove_user_option = new System.Windows.Forms.ToolStripMenuItem();
             this.show_remaining_option = new System.Windows.Forms.ToolStripMenuItem();
-            this.contestants_list = new System.Windows.Forms.ListBox();
+            this.show_count_option = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.raffle_winner_lbl = new System.Windows.Forms.TextBox();
+            this.contestants_list = new System.Windows.Forms.ListView();
+            this.Contestant = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Count = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -76,7 +79,8 @@
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.remove_user_option,
-            this.show_remaining_option});
+            this.show_remaining_option,
+            this.show_count_option});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -90,19 +94,19 @@
             // 
             // show_remaining_option
             // 
+            this.show_remaining_option.Checked = true;
+            this.show_remaining_option.CheckState = System.Windows.Forms.CheckState.Checked;
             this.show_remaining_option.Name = "show_remaining_option";
             this.show_remaining_option.Size = new System.Drawing.Size(255, 22);
             this.show_remaining_option.Text = "Show Remaining Contestants";
             this.show_remaining_option.Click += new System.EventHandler(this.showRemainingContestantsToolStripMenuItem_Click);
             // 
-            // contestants_list
+            // show_count_option
             // 
-            this.contestants_list.CausesValidation = false;
-            this.contestants_list.FormattingEnabled = true;
-            this.contestants_list.Location = new System.Drawing.Point(90, 122);
-            this.contestants_list.Name = "contestants_list";
-            this.contestants_list.Size = new System.Drawing.Size(221, 147);
-            this.contestants_list.TabIndex = 3;
+            this.show_count_option.Name = "show_count_option";
+            this.show_count_option.Size = new System.Drawing.Size(255, 22);
+            this.show_count_option.Text = "Show Contestants Entry Count";
+            this.show_count_option.Click += new System.EventHandler(this.showContestantsCountToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -123,14 +127,36 @@
             this.raffle_winner_lbl.TabIndex = 5;
             this.raffle_winner_lbl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
+            // contestants_list
+            // 
+            this.contestants_list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Contestant,
+            this.Count});
+            this.contestants_list.Location = new System.Drawing.Point(90, 122);
+            this.contestants_list.Name = "contestants_list";
+            this.contestants_list.Size = new System.Drawing.Size(221, 147);
+            this.contestants_list.TabIndex = 6;
+            this.contestants_list.UseCompatibleStateImageBehavior = false;
+            this.contestants_list.View = System.Windows.Forms.View.Details;
+            // 
+            // Contestant
+            // 
+            this.Contestant.Text = "Name";
+            this.Contestant.Width = 107;
+            // 
+            // Count
+            // 
+            this.Count.Text = "Entries";
+            this.Count.Width = 107;
+            // 
             // View
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(401, 281);
+            this.Controls.Add(this.contestants_list);
             this.Controls.Add(this.raffle_winner_lbl);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.contestants_list);
             this.Controls.Add(this.select_winner_btn);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -152,9 +178,12 @@
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remove_user_option;
         private System.Windows.Forms.ToolStripMenuItem show_remaining_option;
-        private System.Windows.Forms.ListBox contestants_list;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox raffle_winner_lbl;
+        private System.Windows.Forms.ToolStripMenuItem show_count_option;
+        private System.Windows.Forms.ListView contestants_list;
+        private System.Windows.Forms.ColumnHeader Contestant;
+        private System.Windows.Forms.ColumnHeader Count;
     }
 }
 

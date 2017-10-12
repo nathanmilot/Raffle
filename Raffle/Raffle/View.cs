@@ -11,10 +11,10 @@ namespace Raffle {
 
 
         public event Action<string> ChooseFileEvent;
-        public event Action<string> OpenFileEvent;
+        public event Action<string, bool> OpenFileEvent;
         public event Action<bool> EnableButtonsEvent;
         public event Action<bool> GetNextWinnerEvent;
-        public event Action UpdateRemainingContestantsEvent;
+        public event Action<bool> UpdateRemainingContestantsEvent;
 
 
         public string CurrentFile { get; set; }
@@ -35,11 +35,13 @@ namespace Raffle {
 
         public View() {
             InitializeComponent();
-            this.Height = 160;
+            this.Height = this.show_remaining_option.Checked ? 330 : 160;
+            this.contestants_list.Columns[1].Width = 0;
             this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.EnableNewWinnerButton(false);
+            this.contestants_list.Columns[0].TextAlign = HorizontalAlignment.Center;
         }
 
         private void OpenRaffleToolStripMenuItem_Click(object sender, EventArgs e) {
@@ -51,7 +53,7 @@ namespace Raffle {
         }
 
         public void OpenFile(string name) {
-            OpenFileEvent?.Invoke(name);
+            OpenFileEvent?.Invoke(name, show_count_option.Checked);
         }
 
         public void AnimateWinner() {
@@ -65,7 +67,7 @@ namespace Raffle {
                 }
                 this.Invoke((MethodInvoker)delegate {
                     EnableButtonsEvent?.Invoke(true);
-                    UpdateRemainingContestantsEvent?.Invoke();
+                    UpdateRemainingContestantsEvent?.Invoke(show_count_option.Checked);
                 });
             });
         }
@@ -86,6 +88,7 @@ namespace Raffle {
             select_winner_btn.Enabled = enable;
             show_remaining_option.Enabled = enable;
             remove_user_option.Enabled = enable;
+            show_count_option.Enabled = enable;
         }
 
         public void EnableNewWinnerButton(bool enable) {
@@ -100,7 +103,7 @@ namespace Raffle {
             this.show_remaining_option.Checked = !this.show_remaining_option.Checked;
             if (this.show_remaining_option.Checked) {
                 this.Height += 170;
-                UpdateRemainingContestantsEvent?.Invoke();
+                UpdateRemainingContestantsEvent?.Invoke(show_count_option.Checked);
                 this.contestants_list.Visible = true;
             } else {
                 this.Height -= 170;
@@ -110,9 +113,25 @@ namespace Raffle {
 
         public void UpdateRemainingContestantsList(SortedSet<string> contestants) {
             this.contestants_list.Items.Clear();
+            this.contestants_list.Columns[0].Width = this.contestants_list.Width - 4;
+            this.contestants_list.Columns[1].Width = 0;
             foreach (string name in contestants) {
                 this.contestants_list.Items.Add(name);
             }
+        }
+
+        public void UpdateRemainingContestantsList(SortedDictionary<string, int> contestants) {
+            this.contestants_list.Items.Clear();
+            this.contestants_list.Columns[0].Width = this.contestants_list.Width / 2 - 2;
+            this.contestants_list.Columns[1].Width = this.contestants_list.Width / 2 - 2;
+            foreach (string name in contestants.Keys) {
+                this.contestants_list.Items.Add(new ListViewItem(new string[] { name, contestants[name].ToString() }));
+            }
+        }
+
+        private void showContestantsCountToolStripMenuItem_Click(object sender, EventArgs e) {
+            this.show_count_option.Checked = !this.show_count_option.Checked;
+            UpdateRemainingContestantsEvent?.Invoke(show_count_option.Checked);
         }
 
     }
