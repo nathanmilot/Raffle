@@ -23,7 +23,6 @@ namespace Raffle {
                     while (!myStream.EndOfStream) {
                         string line = myStream.ReadLine();
                         string name = line.Split(',', '\t')[0];
-                        //TODO(nathanmilot): improve this efficency.
                         if (line.Split(',', '\t').Length == 2) {
                             if (double.TryParse(line.Split(',', '\t')[1], out double count)) {
                                 for (int i = 0; i < count; i++) {

@@ -90,7 +90,7 @@
             this.remove_user_option.Name = "remove_user_option";
             this.remove_user_option.Size = new System.Drawing.Size(255, 22);
             this.remove_user_option.Text = "Remove Contestant After Winning";
-            this.remove_user_option.Click += new System.EventHandler(this.remove_user_option_Click);
+            this.remove_user_option.Click += new System.EventHandler(this.Remove_user_option_Click);
             // 
             // show_remaining_option
             // 
@@ -99,14 +99,14 @@
             this.show_remaining_option.Name = "show_remaining_option";
             this.show_remaining_option.Size = new System.Drawing.Size(255, 22);
             this.show_remaining_option.Text = "Show Remaining Contestants";
-            this.show_remaining_option.Click += new System.EventHandler(this.showRemainingContestantsToolStripMenuItem_Click);
+            this.show_remaining_option.Click += new System.EventHandler(this.ShowRemainingContestantsToolStripMenuItem_Click);
             // 
             // show_count_option
             // 
             this.show_count_option.Name = "show_count_option";
             this.show_count_option.Size = new System.Drawing.Size(255, 22);
             this.show_count_option.Text = "Show Contestants Entry Count";
-            this.show_count_option.Click += new System.EventHandler(this.showContestantsCountToolStripMenuItem_Click);
+            this.show_count_option.Click += new System.EventHandler(this.ShowContestantsCountToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -125,6 +125,7 @@
             this.raffle_winner_lbl.ReadOnly = true;
             this.raffle_winner_lbl.Size = new System.Drawing.Size(221, 20);
             this.raffle_winner_lbl.TabIndex = 5;
+            this.raffle_winner_lbl.TabStop = false;
             this.raffle_winner_lbl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // contestants_list
@@ -136,6 +137,7 @@
             this.contestants_list.Name = "contestants_list";
             this.contestants_list.Size = new System.Drawing.Size(221, 147);
             this.contestants_list.TabIndex = 6;
+            this.contestants_list.TabStop = false;
             this.contestants_list.UseCompatibleStateImageBehavior = false;
             this.contestants_list.View = System.Windows.Forms.View.Details;
             // 

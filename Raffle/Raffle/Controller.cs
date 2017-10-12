@@ -6,11 +6,10 @@ namespace Raffle {
 
         private IView window;
         private Raffle model;
-        private System.Windows.Forms.View window1;
 
         public Controller(IView window) {
             this.window = window;
-            this.model = new Raffle(window.CurrentFile);
+            model = new Raffle(window.CurrentFile);
 
             window.ChooseFileEvent += HandleChooseFile;
             window.OpenFileEvent += HandleOpenFile;
@@ -19,15 +18,21 @@ namespace Raffle {
             window.UpdateRemainingContestantsEvent += HandleUpdateRemainingContestants;
     }
 
+        public void HandleOpenFile(string filename, bool showCount) {
+            try {
+                model = new Raffle(filename.Replace("\\", "/"));
+                HandleUpdateRemainingContestants(showCount);
+                window.AnimateWinner();
+            } catch (Exception) {
+                MessageBox.Show("There was an error loading the file");
+            }
+        }
+
         private void HandleUpdateRemainingContestants(bool showCount) {
             if (showCount)
                 window.UpdateRemainingContestantsList(model.GetRemainingNamesWithCount());
             else
                 window.UpdateRemainingContestantsList(model.GetRemainingNames());
-        }
-
-        public Controller(System.Windows.Forms.View window1) {
-            this.window1 = window1;
         }
 
         private void HandleEnableButtons(bool enable) {
@@ -56,17 +61,6 @@ namespace Raffle {
                 throw new Exception("User canceled the selection");
             }
             fileDialog.Dispose();
-        }
-
-        public void HandleOpenFile(string filename, bool showCount) {
-            try {
-                model = new Raffle(filename.Replace("\\", "/"));
-                HandleUpdateRemainingContestants(showCount);
-                window.AnimateWinner();
-
-            } catch (Exception) {
-                MessageBox.Show("There was an error loading the file");
-            }
         }
 
     }
