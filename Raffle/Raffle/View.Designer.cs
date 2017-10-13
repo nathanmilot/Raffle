@@ -42,13 +42,14 @@
             // 
             // select_winner_btn
             // 
-            this.select_winner_btn.Location = new System.Drawing.Point(126, 85);
+            this.select_winner_btn.Location = new System.Drawing.Point(78, 85);
             this.select_winner_btn.Name = "select_winner_btn";
             this.select_winner_btn.Size = new System.Drawing.Size(148, 23);
             this.select_winner_btn.TabIndex = 0;
             this.select_winner_btn.Text = "Select Another Winner";
             this.select_winner_btn.UseVisualStyleBackColor = true;
             this.select_winner_btn.Click += new System.EventHandler(this.Select_winner_btn_Click);
+            this.select_winner_btn.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Select_winner_btn_KeyUp);
             // 
             // menuStrip1
             // 
@@ -57,7 +58,7 @@
             this.optionsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(401, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(305, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -111,7 +112,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(169, 36);
+            this.label1.Location = new System.Drawing.Point(121, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 19);
             this.label1.TabIndex = 4;
@@ -119,10 +120,12 @@
             // 
             // raffle_winner_lbl
             // 
-            this.raffle_winner_lbl.Location = new System.Drawing.Point(90, 60);
+            this.raffle_winner_lbl.Font = new System.Drawing.Font("Arial Black", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.raffle_winner_lbl.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.raffle_winner_lbl.Location = new System.Drawing.Point(42, 52);
             this.raffle_winner_lbl.Name = "raffle_winner_lbl";
             this.raffle_winner_lbl.ReadOnly = true;
-            this.raffle_winner_lbl.Size = new System.Drawing.Size(221, 20);
+            this.raffle_winner_lbl.Size = new System.Drawing.Size(221, 30);
             this.raffle_winner_lbl.TabIndex = 5;
             this.raffle_winner_lbl.TabStop = false;
             this.raffle_winner_lbl.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -133,9 +136,9 @@
             this.Contestant,
             this.Count});
             this.contestants_list.FullRowSelect = true;
-            this.contestants_list.Location = new System.Drawing.Point(90, 122);
+            this.contestants_list.Location = new System.Drawing.Point(42, 127);
             this.contestants_list.Name = "contestants_list";
-            this.contestants_list.Size = new System.Drawing.Size(221, 147);
+            this.contestants_list.Size = new System.Drawing.Size(221, 207);
             this.contestants_list.TabIndex = 6;
             this.contestants_list.TabStop = false;
             this.contestants_list.UseCompatibleStateImageBehavior = false;
@@ -157,7 +160,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(401, 281);
+            this.ClientSize = new System.Drawing.Size(305, 351);
             this.Controls.Add(this.contestants_list);
             this.Controls.Add(this.raffle_winner_lbl);
             this.Controls.Add(this.label1);

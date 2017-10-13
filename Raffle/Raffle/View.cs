@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -9,6 +10,9 @@ namespace Raffle {
     public partial class View : Form, IView {
 
         private int sortColumn = 0;
+
+        private int HeightMax = 390;
+        private int HeightMin = 165;
 
         public event Action<string> ChooseFileEvent;
         public event Action<string> RemoveContestantEvent;
@@ -35,7 +39,7 @@ namespace Raffle {
 
         public View() {
             InitializeComponent();
-            Height = show_remaining_option.Checked ? 330 : 160;
+            Height = show_remaining_option.Checked ? HeightMax : HeightMin;
             contestants_list.Columns[0].Width = contestants_list.Width - 4;
             contestants_list.Columns[1].Width = 0;
             MaximizeBox = false;
@@ -87,7 +91,7 @@ namespace Raffle {
             foreach (string name in contestants) {
                 contestants_list.Items.Add(name);
             }
-            if (contestants_list.Items.Count > 7) {
+            if (contestants_list.Items.Count > 10) {
                 contestants_list.Columns[0].Width = contestants_list.Width - 4 - SystemInformation.VerticalScrollBarWidth;
             } else {
                 contestants_list.Columns[0].Width = contestants_list.Width - 4;
@@ -99,7 +103,7 @@ namespace Raffle {
             foreach (string name in contestants.Keys) {
                 contestants_list.Items.Add(new ListViewItem(new string[] { name, contestants[name].ToString() }));
             }
-            if (contestants_list.Items.Count > 7) {
+            if (contestants_list.Items.Count > 10) {
                 contestants_list.Columns[0].Width = contestants_list.Width / 2 - 2 - SystemInformation.VerticalScrollBarWidth / 2;
                 contestants_list.Columns[1].Width = contestants_list.Width / 2 - 2 - SystemInformation.VerticalScrollBarWidth / 2;
             } else {
@@ -139,11 +143,11 @@ namespace Raffle {
         private void ShowRemainingContestantsToolStripMenuItem_Click(object sender, EventArgs e) {
             show_remaining_option.Checked = !show_remaining_option.Checked;
             if (show_remaining_option.Checked) {
-                Height += 170;
+                Height = HeightMax;
                 UpdateRemainingContestantsEvent?.Invoke(show_count_option.Checked);
                 contestants_list.Visible = true;
             } else {
-                Height -= 170;
+                Height = HeightMin;
                 contestants_list.Visible = false;
             }
         }
@@ -180,8 +184,13 @@ namespace Raffle {
                 }
             }
         }
-    }
 
+        private void Select_winner_btn_KeyUp(object sender, KeyEventArgs e) {
+            if(select_winner_btn.Enabled && e.KeyValue == 13) {
+                Select_winner_btn_Click(sender, e);
+            }
+        }
+    }
 
     class ListViewItemComparer : IComparer {
         private int col;
@@ -198,6 +207,9 @@ namespace Raffle {
             int returnVal = -1;
             int intX;
             int intY;
+            if(((ListViewItem)x).SubItems.Count == col) {
+                col = 0;
+            }
             if (int.TryParse(((ListViewItem)x).SubItems[col].Text, out intX) && int.TryParse(((ListViewItem)y).SubItems[col].Text, out intY)) {
                 returnVal = intX - intY;
             } else {
