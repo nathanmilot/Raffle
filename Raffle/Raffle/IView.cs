@@ -33,5 +33,8 @@ namespace Raffle {
         void UpdateRemainingContestantsList(SortedSet<string> contestants);
 
         void UpdateRemainingContestantsList(SortedDictionary<string, int> contestants);
+
+        void UpdateAndAnimate();
+
     }
 }

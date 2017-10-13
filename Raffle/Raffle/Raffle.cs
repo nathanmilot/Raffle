@@ -26,13 +26,16 @@ namespace Raffle {
                         if (line.Split(',', '\t').Length == 2) {
                             if (double.TryParse(line.Split(',', '\t')[1], out double count)) {
                                 for (int i = 0; i < count; i++) {
-                                    names.Insert(rndm.Next(0, names.Count), name);
+                                    //names.Insert(rndm.Next(0, names.Count), name);
+                                    names.Add(name);
                                 }
                             }
                         } else {
-                            names.Insert(rndm.Next(0, names.Count), name);
+                            //names.Insert(rndm.Next(0, names.Count), name);
+                            names.Add(name);
                         }
                     }
+                    names.Shuffle();
                 }
             } catch (Exception ex) {
                 MessageBox.Show("Error: Could not read file from disk. Original error: " + ex.Message);
@@ -60,7 +63,7 @@ namespace Raffle {
 
         public SortedSet<string> GetRemainingNames() {
             if (names != null)
-                return new SortedSet<string>(names);
+                return new SortedSet<string>(new HashSet<string>(names));
             else
                 return new SortedSet<string>();
         }
@@ -78,6 +81,22 @@ namespace Raffle {
                 return result;
             }
             return new SortedDictionary<string, int>();
+        }
+    }
+
+    public static class IListExtensions {
+
+        private static Random rndm = new Random();
+
+        public static void Shuffle<T>(this IList<T> ts) {
+            var count = ts.Count;
+            var last = count - 1;
+            for (var i = 0; i < last; ++i) {
+                var r = rndm.Next(i, count);
+                var tmp = ts[i];
+                ts[i] = ts[r];
+                ts[r] = tmp;
+            }
         }
     }
 }

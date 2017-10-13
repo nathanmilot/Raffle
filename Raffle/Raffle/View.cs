@@ -104,12 +104,17 @@ namespace Raffle {
             }
         }
 
-        private void OpenRaffleToolStripMenuItem_Click(object sender, EventArgs e) {
+        public void UpdateAndAnimate() {
             Task.Factory.StartNew(() => {
-                Invoke((MethodInvoker)delegate {
-                    ChooseFileEvent?.Invoke(null);
+                this.Invoke((MethodInvoker)delegate {
+                    UpdateRemainingContestantsEvent?.Invoke(show_count_option.Checked);
+                    AnimateWinner();
                 });
             });
+        }
+
+        private void OpenRaffleToolStripMenuItem_Click(object sender, EventArgs e) {
+            ChooseFileEvent?.Invoke(null);
         }
 
         private void Select_winner_btn_Click(object sender, EventArgs e) {
@@ -142,7 +147,7 @@ namespace Raffle {
         private void ShowContestantsCountToolStripMenuItem_Click(object sender, EventArgs e) {
             show_count_option.Checked = !show_count_option.Checked;
             UpdateRemainingContestantsEvent?.Invoke(show_count_option.Checked);
-        } 
+        }
 
     }
 

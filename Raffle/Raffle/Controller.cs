@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Raffle {
@@ -16,16 +17,17 @@ namespace Raffle {
             window.GetNextWinnerEvent += HandleGetNextWinner;
             window.EnableButtonsEvent += HandleEnableButtons;
             window.UpdateRemainingContestantsEvent += HandleUpdateRemainingContestants;
-    }
+        }
 
         public void HandleOpenFile(string filename, bool showCount) {
-            try {
-                model = new Raffle(filename.Replace("\\", "/"));
-                HandleUpdateRemainingContestants(showCount);
-                window.AnimateWinner();
-            } catch (Exception) {
-                MessageBox.Show("There was an error loading the file");
-            }
+            Task.Factory.StartNew(() => {
+                try {
+                    model = new Raffle(filename.Replace("\\", "/"));
+                    window.UpdateAndAnimate();
+                } catch (Exception) {
+                    MessageBox.Show("There was an error loading the file");
+                }
+            });
         }
 
         private void HandleUpdateRemainingContestants(bool showCount) {
