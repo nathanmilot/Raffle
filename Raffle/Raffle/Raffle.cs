@@ -71,12 +71,8 @@ namespace Raffle {
         public SortedDictionary<string, int> GetRemainingNamesWithCount() {
             if (names != null) {
                 SortedDictionary<string, int> result = new SortedDictionary<string, int>();
-                foreach (string s in names) {
-                    if (result.ContainsKey(s)) {
-                        result[s]++;
-                    } else {
-                        result.Add(s, 1);
-                    }
+                foreach (string s in GetRemainingNames()) {
+                    result.Add(s, names.FindAll(new Predicate<string>(s.Equals)).Count);
                 }
                 return result;
             }
