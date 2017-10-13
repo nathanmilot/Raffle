@@ -13,10 +13,15 @@ namespace Raffle {
             model = new Raffle(window.CurrentFile);
 
             window.ChooseFileEvent += HandleChooseFile;
+            window.RemoveContestantEvent += HandleRemoveContestant;
             window.OpenFileEvent += HandleOpenFile;
             window.GetNextWinnerEvent += HandleGetNextWinner;
             window.EnableButtonsEvent += HandleEnableButtons;
             window.UpdateRemainingContestantsEvent += HandleUpdateRemainingContestants;
+        }
+
+        private void HandleRemoveContestant(string name) {
+            model.RemoveContestant(name);
         }
 
         public void HandleOpenFile(string filename, bool showCount) {

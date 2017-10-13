@@ -11,6 +11,7 @@ namespace Raffle {
         private int sortColumn = 0;
 
         public event Action<string> ChooseFileEvent;
+        public event Action<string> RemoveContestantEvent;
         public event Action<string, bool> OpenFileEvent;
         public event Action<bool> EnableButtonsEvent;
         public event Action<bool> GetNextWinnerEvent;
@@ -166,6 +167,18 @@ namespace Raffle {
 
             contestants_list.Sort();
             contestants_list.ListViewItemSorter = new ListViewItemComparer(e.Column, contestants_list.Sorting);
+        }
+
+        private void contestants_list_KeyUp(object sender, KeyEventArgs e) {
+            if(select_winner_btn.Enabled && (e.KeyValue == 46 || e.KeyValue == 8)) {
+                foreach(ListViewItem item in contestants_list.SelectedItems) {
+                    RemoveContestantEvent?.Invoke(item.Text);
+                }
+                UpdateRemainingContestantsEvent?.Invoke(show_count_option.Checked);
+                if(contestants_list.Items.Count == 0) {
+                    select_winner_btn.Enabled = false;
+                }
+            }
         }
     }
 

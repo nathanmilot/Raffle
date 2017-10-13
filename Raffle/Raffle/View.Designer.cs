@@ -141,6 +141,7 @@
             this.contestants_list.UseCompatibleStateImageBehavior = false;
             this.contestants_list.View = System.Windows.Forms.View.Details;
             this.contestants_list.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.contestants_list_ColumnClick);
+            this.contestants_list.KeyUp += new System.Windows.Forms.KeyEventHandler(this.contestants_list_KeyUp);
             // 
             // Contestant
             // 

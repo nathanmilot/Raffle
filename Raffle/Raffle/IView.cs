@@ -12,6 +12,8 @@ namespace Raffle {
 
         event Action<string> ChooseFileEvent;
 
+        event Action<string> RemoveContestantEvent;
+
         event Action<string, bool> OpenFileEvent;
 
         event Action<bool> EnableButtonsEvent;

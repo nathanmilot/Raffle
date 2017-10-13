@@ -78,6 +78,10 @@ namespace Raffle {
             }
             return new SortedDictionary<string, int>();
         }
+
+        public void RemoveContestant(string name) {
+            names.RemoveAll(new Predicate<string>(name.Equals));
+        }
     }
 
     public static class IListExtensions {
