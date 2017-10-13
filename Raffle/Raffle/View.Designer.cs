@@ -23,6 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(View));
             this.select_winner_btn = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -94,8 +95,6 @@
             // 
             // show_remaining_option
             // 
-            this.show_remaining_option.Checked = true;
-            this.show_remaining_option.CheckState = System.Windows.Forms.CheckState.Checked;
             this.show_remaining_option.Name = "show_remaining_option";
             this.show_remaining_option.Size = new System.Drawing.Size(255, 22);
             this.show_remaining_option.Text = "Show Remaining Contestants";
@@ -161,6 +160,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.select_winner_btn);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "View";
             this.Text = "Raffle";
