@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,6 +7,8 @@ using System.Windows.Forms;
 
 namespace Raffle {
     public partial class View : Form, IView {
+
+        private int sortColumn = 0;
 
         public event Action<string> ChooseFileEvent;
         public event Action<string, bool> OpenFileEvent;
@@ -149,6 +152,48 @@ namespace Raffle {
             UpdateRemainingContestantsEvent?.Invoke(show_count_option.Checked);
         }
 
+        private void contestants_list_ColumnClick(object sender, ColumnClickEventArgs e) {
+
+            if (e.Column != sortColumn) {
+                sortColumn = e.Column;
+                contestants_list.Sorting = SortOrder.Ascending;
+            } else {
+                if (contestants_list.Sorting == SortOrder.Ascending)
+                    contestants_list.Sorting = SortOrder.Descending;
+                else
+                    contestants_list.Sorting = SortOrder.Ascending;
+            }
+
+            contestants_list.Sort();
+            contestants_list.ListViewItemSorter = new ListViewItemComparer(e.Column, contestants_list.Sorting);
+        }
+    }
+
+
+    class ListViewItemComparer : IComparer {
+        private int col;
+        private SortOrder order;
+        public ListViewItemComparer() {
+            col = 0;
+            order = SortOrder.Ascending;
+        }
+        public ListViewItemComparer(int column, SortOrder order) {
+            col = column;
+            this.order = order;
+        }
+        public int Compare(object x, object y) {
+            int returnVal = -1;
+            int intX;
+            int intY;
+            if (int.TryParse(((ListViewItem)x).SubItems[col].Text, out intX) && int.TryParse(((ListViewItem)y).SubItems[col].Text, out intY)) {
+                returnVal = intX - intY;
+            } else {
+                returnVal = String.Compare(((ListViewItem)x).SubItems[col].Text, ((ListViewItem)y).SubItems[col].Text);
+            }
+            if (order == SortOrder.Descending)
+                returnVal *= -1;
+            return returnVal;
+        }
     }
 
 }

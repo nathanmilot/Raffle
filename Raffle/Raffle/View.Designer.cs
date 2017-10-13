@@ -132,6 +132,7 @@
             this.contestants_list.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Contestant,
             this.Count});
+            this.contestants_list.FullRowSelect = true;
             this.contestants_list.Location = new System.Drawing.Point(90, 122);
             this.contestants_list.Name = "contestants_list";
             this.contestants_list.Size = new System.Drawing.Size(221, 147);
@@ -139,6 +140,7 @@
             this.contestants_list.TabStop = false;
             this.contestants_list.UseCompatibleStateImageBehavior = false;
             this.contestants_list.View = System.Windows.Forms.View.Details;
+            this.contestants_list.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.contestants_list_ColumnClick);
             // 
             // Contestant
             // 
